@@ -1532,7 +1532,8 @@ impl AppClient {
         let top_tracks = self
             .artist_top_tracks(artist_id.as_ref(), Some(rspotify::model::Market::FromToken))
             .await
-            .context("get artist's top tracks")?
+            .ok()
+            .unwrap_or_default()
             .into_iter()
             .filter_map(Track::try_from_full_track)
             .collect::<Vec<_>>();
